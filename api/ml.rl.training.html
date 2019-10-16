@@ -102,7 +102,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.actor_predictor">ml.rl.training.actor_predictor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.c51_trainer">ml.rl.training.c51_trainer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.cem_trainer">ml.rl.training.cem_trainer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.dqn_predictor">ml.rl.training.dqn_predictor module</a></li>
@@ -112,11 +111,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.loss_reporter">ml.rl.training.loss_reporter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.off_policy_predictor">ml.rl.training.off_policy_predictor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.on_policy_predictor">ml.rl.training.on_policy_predictor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.parametric_dqn_predictor">ml.rl.training.parametric_dqn_predictor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.parametric_dqn_trainer">ml.rl.training.parametric_dqn_trainer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.qrdqn_trainer">ml.rl.training.qrdqn_trainer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.rl_dataset">ml.rl.training.rl_dataset module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.rl_exporter">ml.rl.training.rl_exporter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.rl_trainer_pytorch">ml.rl.training.rl_trainer_pytorch module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.sac_trainer">ml.rl.training.sac_trainer module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-ml.rl.training.sandboxed_predictor">ml.rl.training.sandboxed_predictor module</a></li>
@@ -212,27 +209,6 @@
 </div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-ml.rl.training.actor_predictor">
-<span id="ml-rl-training-actor-predictor-module"></span><h2>ml.rl.training.actor_predictor module<a class="headerlink" href="#module-ml.rl.training.actor_predictor" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ml.rl.training.actor_predictor.ActorPredictor">
-<em class="property">class </em><code class="sig-prename descclassname">ml.rl.training.actor_predictor.</code><code class="sig-name descname">ActorPredictor</code><span class="sig-paren">(</span><em class="sig-param">pem</em>, <em class="sig-param">ws</em>, <em class="sig-param">predict_net=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.actor_predictor.ActorPredictor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ml.rl.training.sandboxed_predictor.SandboxedRLPredictor" title="ml.rl.training.sandboxed_predictor.SandboxedRLPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ml.rl.training.sandboxed_predictor.SandboxedRLPredictor</span></code></a></p>
-<dl class="method">
-<dt id="ml.rl.training.actor_predictor.ActorPredictor.actor_prediction">
-<code class="sig-name descname">actor_prediction</code><span class="sig-paren">(</span><em class="sig-param">float_state_features: List[Dict[int, float]]</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, float]]<a class="headerlink" href="#ml.rl.training.actor_predictor.ActorPredictor.actor_prediction" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ml.rl.training.actor_predictor.ActorPredictor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">float_state_features: List[Dict[int, float]]</em><span class="sig-paren">)</span> &#x2192; List[Dict[str, float]]<a class="headerlink" href="#ml.rl.training.actor_predictor.ActorPredictor.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns values for each state
-:param float_state_features A list of feature -&gt; float value dict examples</p>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="module-ml.rl.training.c51_trainer">
 <span id="ml-rl-training-c51-trainer-module"></span><h2>ml.rl.training.c51_trainer module<a class="headerlink" href="#module-ml.rl.training.c51_trainer" title="Permalink to this headline">¶</a></h2>
@@ -791,22 +767,6 @@ Use the classes in off_policy_predictor.py</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-ml.rl.training.parametric_dqn_predictor">
-<span id="ml-rl-training-parametric-dqn-predictor-module"></span><h2>ml.rl.training.parametric_dqn_predictor module<a class="headerlink" href="#module-ml.rl.training.parametric_dqn_predictor" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ml.rl.training.parametric_dqn_predictor.ParametricDQNPredictor">
-<em class="property">class </em><code class="sig-prename descclassname">ml.rl.training.parametric_dqn_predictor.</code><code class="sig-name descname">ParametricDQNPredictor</code><span class="sig-paren">(</span><em class="sig-param">pem</em>, <em class="sig-param">ws</em>, <em class="sig-param">predict_net=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.parametric_dqn_predictor.ParametricDQNPredictor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ml.rl.training.sandboxed_predictor.SandboxedRLPredictor" title="ml.rl.training.sandboxed_predictor.SandboxedRLPredictor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ml.rl.training.sandboxed_predictor.SandboxedRLPredictor</span></code></a></p>
-<dl class="method">
-<dt id="ml.rl.training.parametric_dqn_predictor.ParametricDQNPredictor.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">float_state_features</em>, <em class="sig-param">actions</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.parametric_dqn_predictor.ParametricDQNPredictor.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns values for each state
-:param float_state_features A list of feature -&gt; float value dict examples</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-ml.rl.training.parametric_dqn_trainer">
 <span id="ml-rl-training-parametric-dqn-trainer-module"></span><h2>ml.rl.training.parametric_dqn_trainer module<a class="headerlink" href="#module-ml.rl.training.parametric_dqn_trainer" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -924,53 +884,6 @@ replay buffer.</p>
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_dataset.RLDataset.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save samples as a pickle file or JSON file.</p>
 </dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-ml.rl.training.rl_exporter">
-<span id="ml-rl-training-rl-exporter-module"></span><h2>ml.rl.training.rl_exporter module<a class="headerlink" href="#module-ml.rl.training.rl_exporter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ml.rl.training.rl_exporter.ActorExporter">
-<em class="property">class </em><code class="sig-prename descclassname">ml.rl.training.rl_exporter.</code><code class="sig-name descname">ActorExporter</code><span class="sig-paren">(</span><em class="sig-param">dnn</em>, <em class="sig-param">feature_extractor=None</em>, <em class="sig-param">output_transformer=None</em>, <em class="sig-param">state_preprocessor=None</em>, <em class="sig-param">predictor_class=&lt;class 'ml.rl.training.actor_predictor.ActorPredictor'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.ActorExporter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ml.rl.training.rl_exporter.SandboxedRLExporter" title="ml.rl.training.rl_exporter.SandboxedRLExporter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ml.rl.training.rl_exporter.SandboxedRLExporter</span></code></a></p>
-<dl class="method">
-<dt id="ml.rl.training.rl_exporter.ActorExporter.from_state_action_normalization">
-<em class="property">classmethod </em><code class="sig-name descname">from_state_action_normalization</code><span class="sig-paren">(</span><em class="sig-param">dnn</em>, <em class="sig-param">state_normalization</em>, <em class="sig-param">action_normalization</em>, <em class="sig-param">state_preprocessor=None</em>, <em class="sig-param">predictor_class=&lt;class 'ml.rl.training.actor_predictor.ActorPredictor'&gt;</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.ActorExporter.from_state_action_normalization" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ml.rl.training.rl_exporter.ParametricDQNExporter">
-<em class="property">class </em><code class="sig-prename descclassname">ml.rl.training.rl_exporter.</code><code class="sig-name descname">ParametricDQNExporter</code><span class="sig-paren">(</span><em class="sig-param">dnn</em>, <em class="sig-param">feature_extractor=None</em>, <em class="sig-param">output_transformer=None</em>, <em class="sig-param">state_preprocessor=None</em>, <em class="sig-param">action_preprocessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.ParametricDQNExporter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ml.rl.training.rl_exporter.SandboxedRLExporter" title="ml.rl.training.rl_exporter.SandboxedRLExporter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ml.rl.training.rl_exporter.SandboxedRLExporter</span></code></a></p>
-<dl class="method">
-<dt id="ml.rl.training.rl_exporter.ParametricDQNExporter.from_state_action_normalization">
-<em class="property">classmethod </em><code class="sig-name descname">from_state_action_normalization</code><span class="sig-paren">(</span><em class="sig-param">dnn</em>, <em class="sig-param">state_normalization</em>, <em class="sig-param">action_normalization</em>, <em class="sig-param">state_preprocessor=None</em>, <em class="sig-param">action_preprocessor=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.ParametricDQNExporter.from_state_action_normalization" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ml.rl.training.rl_exporter.RLExporter">
-<em class="property">class </em><code class="sig-prename descclassname">ml.rl.training.rl_exporter.</code><code class="sig-name descname">RLExporter</code><span class="sig-paren">(</span><em class="sig-param">dnn</em>, <em class="sig-param">feature_extractor=None</em>, <em class="sig-param">output_transformer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.RLExporter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="ml.rl.training.rl_exporter.RLExporter.export">
-<code class="sig-name descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.RLExporter.export" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ml.rl.training.rl_exporter.SandboxedRLExporter">
-<em class="property">class </em><code class="sig-prename descclassname">ml.rl.training.rl_exporter.</code><code class="sig-name descname">SandboxedRLExporter</code><span class="sig-paren">(</span><em class="sig-param">dnn</em>, <em class="sig-param">predictor_class</em>, <em class="sig-param">preprocessing_class</em>, <em class="sig-param">feature_extractor=None</em>, <em class="sig-param">output_transformer=None</em>, <em class="sig-param">state_preprocessor=None</em>, <em class="sig-param">action_preprocessor=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.SandboxedRLExporter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#ml.rl.training.rl_exporter.RLExporter" title="ml.rl.training.rl_exporter.RLExporter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ml.rl.training.rl_exporter.RLExporter</span></code></a></p>
-<dl class="method">
-<dt id="ml.rl.training.rl_exporter.SandboxedRLExporter.export">
-<code class="sig-name descname">export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ml.rl.training.rl_exporter.SandboxedRLExporter.export" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
