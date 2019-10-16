@@ -181,13 +181,13 @@
             
   <div class="section" id="usage">
 <span id="id1"></span><h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<p>Horizon is designed for large-scale, distributed recommendation/optimization tasks where we don’t
+<p>ReAgent is designed for large-scale, distributed recommendation/optimization tasks where we don’t
 have access to a simulator.  In this environment, it’s typically better to train offline on batches
 of data, and release new policies slowly over time.  Because the policy updates slowly and in
 batches, we use <em>off-policy</em> algorithms.  To test a new policy without deploying it, we rely on
 <em>counter-factual policy evaluation (CPE)</em>, a set of techniques for estimating a policy based on the
 actions of another policy.</p>
-<p>Before we get started using Horizon as it is intended, let’s begin with a traditional RL setup with a simulator where we can trivially evaluate new policies:</p>
+<p>Before we get started using ReAgent as it is intended, let’s begin with a traditional RL setup with a simulator where we can trivially evaluate new policies:</p>
 <div class="section" id="on-policy-rl-training">
 <h2>1 - On-Policy RL Training<a class="headerlink" href="#on-policy-rl-training" title="Permalink to this headline">¶</a></h2>
 <p>Open AI Gym is a set of environments: simulators that can run policies for a given task and generate rewards.  If a simulator is accessible, on-policy training (where the latest version of the policy makes new decisions in real-time) can give better results. To train a model on OpenAI Gym, simply run:</p>
@@ -202,11 +202,11 @@ actions of another policy.</p>
 <li><p>We want to evaluate the behavior of the policy offline and then keep the policy constant afterwards to reduce the risk that the policy will degrade at odd hours.</p></li>
 <li><p>We are building on top of traditional recommender systems that typically rely on a fixed, stochastic policy.</p></li>
 </ol>
-<p>For these reasons, Horizon is designed to support batch, off-policy RL.  Let’s now walk though how to train a model with Horizon:</p>
+<p>For these reasons, ReAgent is designed to support batch, off-policy RL.  Let’s now walk though how to train a model with ReAgent:</p>
 </div>
 <div class="section" id="offline-rl-training-batch-rl">
 <h2>2- Offline RL Training (Batch RL)<a class="headerlink" href="#offline-rl-training-batch-rl" title="Permalink to this headline">¶</a></h2>
-<p>The main use case of Horizon is to train RL models in the <strong>batch</strong> setting. In batch reinforcement learning the data collection and policy learning steps are decoupled. Specifically, we try to learn the best possible policy given the input data. In batch RL, being able to handle thousands of varying feature types and distributions and algorithm performance estimates before deployment are of key importance.</p>
+<p>The main use case of ReAgent is to train RL models in the <strong>batch</strong> setting. In batch reinforcement learning the data collection and policy learning steps are decoupled. Specifically, we try to learn the best possible policy given the input data. In batch RL, being able to handle thousands of varying feature types and distributions and algorithm performance estimates before deployment are of key importance.</p>
 <p>In this example, we will train a DQN model on Offline <code class="docutils literal notranslate"><span class="pre">Cartpole-v0</span></code> data:</p>
 <div class="section" id="step-1-create-training-data">
 <h3>Step 1 - Create training data<a class="headerlink" href="#step-1-create-training-data" title="Permalink to this headline">¶</a></h3>
@@ -293,7 +293,7 @@ actions of another policy.</p>
 <div class="section" id="step-2-convert-the-data-to-the-timeline-format">
 <h3>Step 2 - Convert the data to the <code class="docutils literal notranslate"><span class="pre">timeline</span></code> format<a class="headerlink" href="#step-2-convert-the-data-to-the-timeline-format" title="Permalink to this headline">¶</a></h3>
 <p>Models are trained on consecutive pairs of state/action tuples. To assist in creating this table, we have an <code class="docutils literal notranslate"><span class="pre">RLTimelineOperator</span></code> spark operator. Let’s build and run the timeline operator on the data:</p>
-<p>First, we need to build the Spark library that will execute the timeline.  Apache Spark is a platform for doing massively-parallel processing.  Although we are running this on a single file, Spark is designed to work on thousands of files distribued across many machines.  Explaining HDFS, Hive, and Spark are beyond the scope of this tutorial, but for large datasets it’s important to understand these concepts and that it’s possible to run Horizon in a distributed environment by simply changing the location of the input from a file to an HDFS folder.</p>
+<p>First, we need to build the Spark library that will execute the timeline.  Apache Spark is a platform for doing massively-parallel processing.  Although we are running this on a single file, Spark is designed to work on thousands of files distribued across many machines.  Explaining HDFS, Hive, and Spark are beyond the scope of this tutorial, but for large datasets it’s important to understand these concepts and that it’s possible to run ReAgent in a distributed environment by simply changing the location of the input from a file to an HDFS folder.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build timeline package (only need to do this first time)</span>
 <span class="n">mvn</span> <span class="o">-</span><span class="n">f</span> <span class="n">preprocessing</span><span class="o">/</span><span class="n">pom</span><span class="o">.</span><span class="n">xml</span> <span class="n">clean</span> <span class="n">package</span>
 </pre></div>
@@ -329,7 +329,7 @@ actions of another policy.</p>
 </div>
 <div class="section" id="step-3-create-the-normalization-parameters">
 <h3>Step 3 - Create the normalization parameters<a class="headerlink" href="#step-3-create-the-normalization-parameters" title="Permalink to this headline">¶</a></h3>
-<p>Data from production systems is often sparse, noisy and arbitrarily distributed. Literature has shown that neural networks learn faster and better when operating on batches of features that are normally distributed. Horizon includes a workflow that automatically analyzes the training dataset and determines the best transformation function and corresponding normalization parameters for each feature. We can run this workflow on the post timeline data:</p>
+<p>Data from production systems is often sparse, noisy and arbitrarily distributed. Literature has shown that neural networks learn faster and better when operating on batches of features that are normally distributed. ReAgent includes a workflow that automatically analyzes the training dataset and determines the best transformation function and corresponding normalization parameters for each feature. We can run this workflow on the post timeline data:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">ml</span><span class="o">/</span><span class="n">rl</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">create_normalization_metadata</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">p</span> <span class="n">ml</span><span class="o">/</span><span class="n">rl</span><span class="o">/</span><span class="n">workflow</span><span class="o">/</span><span class="n">sample_configs</span><span class="o">/</span><span class="n">discrete_action</span><span class="o">/</span><span class="n">dqn_example</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
