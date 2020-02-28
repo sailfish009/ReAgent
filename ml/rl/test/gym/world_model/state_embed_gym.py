@@ -22,10 +22,10 @@ from gym import Env
 from gym.spaces import Box
 from ml.rl.json_serialize import from_json, json_to_object
 from ml.rl.models.world_model import MemoryNetwork
-from ml.rl.parameters import MDNRNNParameters, OpenAiGymParameters, RLParameters
 from ml.rl.test.gym.open_ai_gym_environment import EnvType, OpenAIGymEnvironment
 from ml.rl.test.gym.open_ai_gym_memory_pool import OpenAIGymMemoryPool
 from ml.rl.test.gym.run_gym import (
+    OpenAiGymParameters,
     create_epsilon,
     create_predictor,
     create_trainer,
@@ -220,7 +220,8 @@ def run_gym(
     for row in embed_rl_dataset.rows:
         replay_buffer.insert_into_memory(**row)
 
-    state_mem = torch.cat([m[0] for m in replay_buffer.replay_memory])
+    assert replay_buffer.memory_buffer is not None
+    state_mem = replay_buffer.memory_buffer.state
     state_min_value = torch.min(state_mem).item()
     state_max_value = torch.max(state_mem).item()
     state_embed_env = StateEmbedGymEnvironment(

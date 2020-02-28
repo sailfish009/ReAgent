@@ -26,7 +26,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   software-properties-common \
   vim \
   emacs \
-  wget
+  unzip \
+  wget \
+  bc
 
 # Sometimes needed to avoid SSL CA issues.
 RUN update-ca-certificates
@@ -35,7 +37,7 @@ ENV HOME /home
 WORKDIR ${HOME}/
 
 # Not using latest version because of https://github.com/conda/conda/issues/8825
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-4.5.12-Linux-x86_64.sh -O miniconda.sh && \
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-Linux-x86_64.sh -O miniconda.sh && \
   chmod +x miniconda.sh && \
   ./miniconda.sh -b -p ${HOME}/miniconda && \
   rm miniconda.sh
@@ -47,8 +49,12 @@ ENV PATH ${HOME}/miniconda/bin:$PATH
 ENV CONDA_PATH ${HOME}/miniconda
 ENV LD_LIBRARY_PATH ${CONDA_PATH}/lib:${LD_LIBRARY_PATH}
 
+# Init conda
+RUN conda init bash
+
 # Set channels
 RUN conda config --add channels conda-forge # For ONNX/tensorboardX
+RUN conda config --add channels nvidia # For cudatoolkit
 RUN conda config --add channels pytorch-nightly # For PyTorch
 
 # Add files to image
@@ -61,6 +67,10 @@ RUN rm requirements.txt
 
 # Install open ai gym
 RUN pip install "gym[classic_control,box2d,atari]"
+
+# Install libtorch
+RUN wget https://download.pytorch.org/libtorch/nightly/cpu/libtorch-cxx11-abi-shared-with-deps-latest.zip
+RUN unzip libtorch-cxx11-abi-shared-with-deps-latest.zip
 
 # Set JAVA_HOME for Spark
 ENV JAVA_HOME ${HOME}/miniconda

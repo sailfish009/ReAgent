@@ -13,23 +13,6 @@ from torch.distributions import Dirichlet  # type: ignore
 from torch.distributions.normal import Normal
 
 
-# TODO: Delete this class
-class ActorWithPreprocessing(ModelBase):
-    def __init__(self, actor_network, state_preprocessor):
-        super().__init__()
-        self.state_preprocessor = state_preprocessor
-        self.actor_network = actor_network
-
-    def forward(self, input):
-        preprocessed_state = self.state_preprocessor(input.state)
-        return self.actor_network(rlt.PreprocessedState.from_tensor(preprocessed_state))
-
-    def input_prototype(self):
-        return rlt.PreprocessedState.from_tensor(
-            self.state_preprocessor.input_prototype()
-        )
-
-
 class FullyConnectedActor(ModelBase):
     def __init__(
         self,
@@ -86,7 +69,7 @@ class GaussianFullyConnectedActor(ModelBase):
         ), "The numbers of sizes and activations must match; got {} vs {}".format(
             len(sizes), len(activations)
         )
-        # The last layer is mean & scale for reparamerization trick
+        # The last layer is mean & scale for reparameterization trick
         self.fc = FullyConnectedNetwork(
             [state_dim] + sizes + [action_dim * 2],
             activations + ["linear"],
@@ -165,7 +148,9 @@ class GaussianFullyConnectedActor(ModelBase):
             )
         log_prob = torch.sum(log_prob - squash_correction, dim=1)
 
-        return rlt.ActorOutput(action=action, log_prob=log_prob.reshape(-1, 1))
+        return rlt.ActorOutput(
+            action=action, log_prob=log_prob.reshape(-1, 1), action_mean=loc
+        )
 
     def _atanh(self, x):
         """
@@ -226,7 +211,7 @@ class DirichletFullyConnectedActor(ModelBase):
         # The last layer gives the concentration of the distribution.
         self.fc = FullyConnectedNetwork(
             [state_dim] + sizes + [action_dim],
-            activations + ["relu"],
+            activations + ["linear"],
             use_batch_norm=use_batch_norm,
         )
 
@@ -238,13 +223,13 @@ class DirichletFullyConnectedActor(ModelBase):
         Get concentration of distribution.
         https://stats.stackexchange.com/questions/244917/what-exactly-is-the-alpha-in-the-dirichlet-distribution
         """
-        return self.fc(state.float_features) + self.EPSILON
+        return self.fc(state.float_features).exp() + self.EPSILON
 
     @torch.no_grad()  # type: ignore
     def get_log_prob(self, state, action):
         concentration = self._get_concentration(state)
         log_prob = Dirichlet(concentration).log_prob(action)
-        return log_prob
+        return log_prob.unsqueeze(dim=1)
 
     def forward(self, input):
         concentration = self._get_concentration(input.state)

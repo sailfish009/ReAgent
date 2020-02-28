@@ -4,7 +4,7 @@
 import json
 import logging
 from dataclasses import asdict
-from typing import Dict
+from typing import Dict, List, Tuple
 
 import numpy as np
 import six
@@ -94,7 +94,7 @@ def identify_parameter(
 
         # shift can be estimated but not in scipy
         boxcox_shift = float(min_value * -1)
-        candidate_values, lmbda = stats.boxcox(
+        candidate_values, lambda_ = stats.boxcox(
             np.maximum(values + boxcox_shift, BOX_COX_MARGIN)
         )
         k2_boxcox, p_boxcox = stats.normaltest(candidate_values)
@@ -103,7 +103,7 @@ def identify_parameter(
                 k2_original, p_original, k2_boxcox, p_boxcox
             )
         )
-        if lmbda < 0.9 or lmbda > 1.1:
+        if lambda_ < 0.9 or lambda_ > 1.1:
             # Lambda is far enough from 1.0 to be worth doing boxcox
             if k2_original > k2_boxcox * 10 and k2_boxcox <= quantile_k2_threshold:
                 # The boxcox output is significantly more normally distributed
@@ -118,7 +118,7 @@ def identify_parameter(
                     and not np.isclose(stddev, 0)
                 ):
                     values = candidate_values
-                    boxcox_lambda = float(lmbda)
+                    boxcox_lambda = float(lambda_)
         if boxcox_lambda is None or skip_box_cox:
             boxcox_shift = None
             boxcox_lambda = None
@@ -199,13 +199,15 @@ def get_feature_start_indices(sorted_features, normalization_parameters):
     return start_indices
 
 
-def sort_features_by_normalization(normalization_parameters):
+def sort_features_by_normalization(
+    normalization_parameters: Dict[int, NormalizationParameters]
+) -> Tuple[List[int], List[int]]:
     """
     Helper function to return a sorted list from a normalization map.
     Also returns the starting index for each feature type"""
     # Sort features by feature type
-    sorted_features = []
-    feature_starts = []
+    sorted_features: List[int] = []
+    feature_starts: List[int] = []
     assert isinstance(
         list(normalization_parameters.keys())[0], int
     ), "Normalization Parameters need to be int"
@@ -226,15 +228,6 @@ def deserialize(parameters_json) -> Dict[int, NormalizationParameters]:
         # Check for negative enum IDs
         if params.feature_type == identify_types.ENUM:
             assert params.possible_values is not None
-            for x in params.possible_values:
-                if x < 0:
-                    logger.fatal(
-                        "Invalid enum ID: {} in feature: {} with possible_values {}"
-                        " (raw: {})".format(
-                            x, feature, params.possible_values, feature_parameters
-                        )
-                    )
-                    raise Exception("Invalid enum ID")
         parameters[int(feature)] = params
     return parameters
 

@@ -13,6 +13,7 @@ from ml.rl.evaluation.evaluator import Evaluator
 from ml.rl.json_serialize import from_json
 from ml.rl.parameters import (
     DiscreteActionModelParameters,
+    EvaluationParameters,
     NormalizationParameters,
     RainbowDQNParameters,
     RLParameters,
@@ -23,10 +24,9 @@ from ml.rl.prediction.predictor_wrapper import (
     DiscreteDqnWithPreprocessor,
 )
 from ml.rl.preprocessing.batch_preprocessor import DiscreteDqnBatchPreprocessor
-from ml.rl.preprocessing.feature_extractor import PredictorFeatureExtractor
 from ml.rl.preprocessing.normalization import sort_features_by_normalization
 from ml.rl.preprocessing.preprocessor import Preprocessor
-from ml.rl.preprocessing.sparse_to_dense import PandasSparseToDenseProcessor
+from ml.rl.preprocessing.sparse_to_dense import StringKeySparseToDenseProcessor
 from ml.rl.readers.json_dataset_reader import JSONDatasetReader
 from ml.rl.tensorboardX import summary_writer_context
 from ml.rl.training.dqn_trainer import DQNTrainer
@@ -117,12 +117,17 @@ def single_process_main(gpu_index, *args):
     rl_parameters = from_json(params["rl"], RLParameters)
     training_parameters = from_json(params["training"], TrainingParameters)
     rainbow_parameters = from_json(params["rainbow"], RainbowDQNParameters)
+    if "evaluation" in params:
+        evaluation_parameters = from_json(params["evaluation"], EvaluationParameters)
+    else:
+        evaluation_parameters = EvaluationParameters()
 
     model_params = DiscreteActionModelParameters(
         actions=action_names,
         rl=rl_parameters,
         training=training_parameters,
         rainbow=rainbow_parameters,
+        evaluation=evaluation_parameters,
     )
     state_normalization = BaseWorkflow.read_norm_file(params["state_norm_data_path"])
 
@@ -147,7 +152,7 @@ def single_process_main(gpu_index, *args):
 
     sorted_features, _ = sort_features_by_normalization(state_normalization)
     preprocess_handler = DiscreteDqnPreprocessHandler(
-        len(action_names), PandasSparseToDenseProcessor(sorted_features)
+        len(action_names), StringKeySparseToDenseProcessor(sorted_features)
     )
 
     train_dataset = JSONDatasetReader(
@@ -177,6 +182,10 @@ def main(params):
             "Horizon is configured to use all GPUs but your platform doesn't support torch.distributed & torch.cuda!"
         )
         params["use_all_avail_gpus"] = False
+    if params["use_gpu"] and not torch.cuda.is_available():
+        logger.info("GPU requested but not available")
+        params["use_gpu"] = False
+
     if params["use_all_avail_gpus"]:
         params["num_processes_per_node"] = max(1, torch.cuda.device_count())
         multiprocessing.spawn(
